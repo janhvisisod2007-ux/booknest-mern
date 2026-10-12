@@ -13,11 +13,13 @@ export function AuthProvider({ children }) {
   });
 
   const saveSession = (data) => {
-    const { token, ...userInfo } = data;
-    localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(userInfo));
-    setUser(userInfo);
-  };
+  const { token, user: nested, ...rest } = data;
+  const profile = nested || rest;
+  const normalized = { ...profile, _id: profile._id || profile.id };
+  localStorage.setItem("token", token);
+  localStorage.setItem("user", JSON.stringify(normalized));
+  setUser(normalized);
+};
 
   const login = async (email, password) => {
     const { data } = await api.post("/auth/login", { email, password });

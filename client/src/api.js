@@ -1,8 +1,10 @@
 import axios from "axios";
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
-});
+const baseURL = import.meta.env.PROD
+  ? "https://booknest-mern-3zjv.onrender.com/api"
+  : import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+
+const api = axios.create({ baseURL });
 
 // attach the token to every request automatically
 api.interceptors.request.use((config) => {

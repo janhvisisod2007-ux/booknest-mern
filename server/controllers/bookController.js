@@ -8,11 +8,15 @@ const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 exports.createBook = async (req, res) => {
   try {
     const { title, author, description, genre, coverImage } = req.body;
-    if (!title || !author) {
-      return res.status(400).json({ message: "Title and author are required" });
+    if (!title || !author || !genre) {
+      return res.status(400).json({ message: "Title, author and genre are required" });
     }
     const book = await Book.create({
-      title, author, description, genre, coverImage,
+      title,
+      author,
+      description,
+      genre,
+      coverImage,
       addedBy: req.user._id,
     });
     res.status(201).json(book);
